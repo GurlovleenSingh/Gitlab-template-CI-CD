@@ -10,6 +10,9 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
+.docker_template: &template
+  tags:
+    - runner
 
 services:
   - docker:20.10.16-dind
@@ -17,8 +20,7 @@ services:
 
 build:
   stage: build
-  tags: 
-    - runner
+<<: *template
   before_script:
     - docker version
   script:
@@ -34,8 +36,7 @@ build:
 
 test_job:
   stage: test
-  tags:
-    - runner
+<<: *template
   script:
     - docker login registry.gitlab.com -u GurlovleenSingh -p Ansibleaws123** 
     - docker pull registry.gitlab.com/project1740/ngnix_project:$CI_PIPELINE_IID
